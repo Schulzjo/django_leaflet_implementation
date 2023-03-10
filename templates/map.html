@@ -1,0 +1,20 @@
+{% load leaflet_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Django leaflet implementation</title>
+    {% leaflet_js %}
+    {% leaflet_css %}
+    <style>
+        .leaflet-container {
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+{% leaflet_map "map" %}
+
+</body>
+</html>

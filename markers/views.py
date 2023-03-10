@@ -1,3 +1,6 @@
 from django.shortcuts import render
 
-# Create your views here.
+
+def markers_map_view(request):
+    return render(request, 'map.html')
+
