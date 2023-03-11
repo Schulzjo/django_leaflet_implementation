@@ -9,11 +9,46 @@
     {% leaflet_css %}
     <style>
         .leaflet-container {
-            height: 100vh;
+            height: 99vh;
         }
     </style>
+    <script>
+
+        let map = undefined;
+        {# using leaflet Api: https://django-leaflet.readthedocs.io/en/latest/templates.html #}
+        window.addEventListener("map:init", function (event) {
+            map = event.detail.map;
+        });
+
+        window.onload = function () {
+
+            document.getElementById("markerForm").addEventListener("submit", function (event) {
+                event.preventDefault();
+
+                let lat = event.currentTarget.lat.value;
+                let lng = event.currentTarget.lng.value;
+
+                L.marker([lat, lng]).addTo(map);
+                map.setView([lat, lng], 13);
+            });
+
+        }
+    </script>
+
 </head>
 <body>
+<form id="markerForm">
+    <label for="lat">
+        Latitude
+        <input type="text" value="10" name="lat">
+    </label>
+    <label for="lng">
+        Longitude
+        <input type="text" value="1" name="lng">
+    </label>
+    <input type="submit" value="Add Marker">
+</form>
+
 {% leaflet_map "map" %}
 
 </body>
