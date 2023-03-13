@@ -1,5 +1,5 @@
 {% load leaflet_tags %}
-
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,30 +14,50 @@
     </style>
     <script>
 
+
         let map = undefined;
+        let markers = [];
         {# using leaflet Api: https://django-leaflet.readthedocs.io/en/latest/templates.html #}
+        {% for marker in markers %}
+            markers.push({
+                "id": {{ marker.id }},
+                "name": "{{ marker.name }}",
+                "leaflet_marker": L.marker([{{ marker.latitude }}, {{ marker.longitude }}])
+            });
+        {% endfor %}
+
         window.addEventListener("map:init", function (event) {
             map = event.detail.map;
-        });
-
-        window.onload = function () {
-
-            document.getElementById("markerForm").addEventListener("submit", function (event) {
-                event.preventDefault();
-
-                let lat = event.currentTarget.lat.value;
-                let lng = event.currentTarget.lng.value;
-
-                L.marker([lat, lng]).addTo(map);
-                map.setView([lat, lng], 13);
+            markers.forEach(function (marker) {
+                marker.leaflet_marker.addTo(map);
             });
 
+        });
+
+        const addMarkerToMap = function (lat, lng) {
+            L.marker([lat, lng]).addTo(map);
+            map.setView([lat, lng], 13);
         }
+
+
+        window.onload = function () {
+            console.log("window.onload");
+        }
+
     </script>
 
 </head>
-<body>
-<form id="markerForm">
+<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' >
+
+<form id="markerForm"
+      hx-post="create/"
+      hx-target="#marker-list"
+      hx-swap="afterend"
+>
+    <label for="name">
+        Name
+        <input type="text" value="Dummy name" name="name">
+    </label>
     <label for="lat">
         Latitude
         <input type="text" value="10" name="lat">
@@ -49,7 +69,15 @@
     <input type="submit" value="Add Marker">
 </form>
 
+<div id="marker-list">
+    {% for marker in markers %}
+        {% include "partials/marker_list_element.html" %}
+    {% endfor %}
+</div>
+
 {% leaflet_map "map" %}
 
 </body>
+<script src="https://unpkg.com/htmx.org@1.6.1"></script>
+
 </html>
