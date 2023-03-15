@@ -34,8 +34,15 @@
 
         });
 
-        const addMarkerToMap = function (lat, lng) {
-            L.marker([lat, lng]).addTo(map);
+        const addMarkerToMap = function (lat, lng, name, id) {
+
+            const lmarker = L.marker([lat, lng]);
+            markers.push({
+                "id": id,
+                "name": name,
+                "leaflet_marker": lmarker
+            });
+            lmarker.addTo(map);
             map.setView([lat, lng], 13);
         }
 

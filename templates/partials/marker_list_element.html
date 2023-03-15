@@ -2,17 +2,17 @@
     <div>
         <p>{{ marker.name }}</p>
         <form
-        hx-confirm="Really?"
-        hx-target="closest article"
-        hx-swap="outerHTML swap"
-        hx-delete="delete/{{ marker.id }}"
+                hx-confirm="Really?"
+                hx-target="closest article"
+                hx-swap="outerHTML swap"
+                hx-delete="delete/{{ marker.id }}"
         >
-        <input type="submit" value="Delete">
+            <input type="submit" value="Delete">
         </form>
     </div>
     <script>
         if (markers.filter(m => m.id === {{ marker.id }}).length === 0) {
-            addMarkerToMap({{ marker.latitude }}, {{ marker.longitude }});
+            addMarkerToMap({{ marker.latitude }}, {{ marker.longitude }}, "{{ marker.name }}", {{ marker.id }});
         }
     </script>
 </article>
