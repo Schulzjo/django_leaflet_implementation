@@ -1,0 +1,82 @@
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  height: 100vh;
+}
+
+/* sizing of map container*/
+.leaflet-container {
+  height: 95vh;
+}
+
+.input-form {
+  height: 5vh;
+  padding: 10px;
+}
+
+.input-field {
+  padding: 5px;
+  margin: 5px;
+}
+
+.main {
+  margin-left: 300px; /* Same as the width of markerlist */
+}
+
+.markerList {
+  height: 100%;
+  width: 300px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+  padding-top: 5vh;
+}
+
+.btn {
+  padding:5px 10px;
+  background:#5bb500;
+  border:0 none;
+  cursor:pointer;
+  color: #fff;
+  vertical-align: middle;
+}
+
+.marker-list-btn {
+  margin-bottom: 5px;
+  cursor:pointer;
+  height: 80px;
+  width: 250px;
+}
+
+.btn-del {
+  background: #ff0000;
+  width: 50px;
+  border-bottom-right-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+.btn:hover {background: #5ba545;}
+
+.btn-del:hover {background: #e83f3f;}
+
+.row-outer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.row-inner {
+  display: inline-block;
+}
