@@ -32,4 +32,6 @@ def markers_delete_view(request, pk):
 
     marker = Marker.objects.get(pk=pk)
     marker.delete()
-    return HttpResponse(status=200)
+    res = HttpResponse(status=200)
+    res.headers["HX-Trigger"] = json.dumps({"delete_marker_from_map": pk})
+    return res

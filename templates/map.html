@@ -46,15 +46,25 @@
             map.setView([lat, lng], 13);
         }
 
+        const removeMarkerFromMap = function (id) {
+            let m = markers.filter(function (marker) {
+                return marker.id === id;
+            })
+            map.removeLayer(m[0].leaflet_marker);
+        }
 
         window.onload = function () {
             console.log("window.onload");
+
+            document.body.addEventListener("delete_marker_from_map", function (event) {
+                removeMarkerFromMap(event.detail.value);
+            });
         }
 
     </script>
 
 </head>
-<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' >
+<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
 
 <form id="markerForm"
       hx-post="create/"
@@ -81,6 +91,7 @@
         {% include "partials/marker_list_element.html" %}
     {% endfor %}
 </div>
+
 
 {% leaflet_map "map" %}
 
