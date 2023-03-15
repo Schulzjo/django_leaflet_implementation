@@ -1,6 +1,6 @@
 <li class="row-outer" id="marker_{{ marker.id }}">
     <div class="row-inner">
-        <div class="btn marker-list-btn">{{ marker.name }}</div>
+        <button class="btn marker-list-btn" onclick="jumpToMarker({{ marker.id }})">{{ marker.name }} </button>
     </div>
     <div class="row-inner">
         <form

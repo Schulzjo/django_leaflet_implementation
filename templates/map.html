@@ -47,6 +47,13 @@
             map.setView([lat, lng], 13);
         }
 
+        const jumpToMarker = function (id) {
+            const marker = markers.find(function (marker) {
+                return marker.id === id;
+            });
+            map.setView(marker.leaflet_marker.getLatLng(), 13);
+        }
+
         const removeMarkerFromMap = function (id) {
             let m = markers.filter(function (marker) {
                 return marker.id === id;
