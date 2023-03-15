@@ -7,6 +7,7 @@
     <title>Django leaflet implementation</title>
     {% leaflet_js %}
     {% leaflet_css %}
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
     <style>
         .leaflet-container {
             height: 99vh;
@@ -64,37 +65,40 @@
     </script>
 
 </head>
-<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+<body class="App" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
 
-<form id="markerForm"
+<form class="input-form"
+        id="markerForm"
       hx-post="create/"
       hx-target="#marker-list"
       hx-swap="afterend"
 >
     <label for="name">
         Name
-        <input type="text" value="Dummy name" name="name">
+        <input class="input-field" type="text" value="Dummy name" name="name">
     </label>
     <label for="lat">
         Latitude
-        <input type="text" value="10" name="lat">
+        <input class="input-field" type="text" value="10" name="lat">
     </label>
     <label for="lng">
         Longitude
-        <input type="text" value="1" name="lng">
+        <input class="input-field" type="text" value="1" name="lng">
     </label>
-    <input type="submit" value="Add Marker">
+    <input type="submit" class="btn" value="Add Marker">
 </form>
 
-<div id="marker-list">
+<div class="markerList">
+<ul id="marker-list" >
     {% for marker in markers %}
         {% include "partials/marker_list_element.html" %}
     {% endfor %}
+</ul>
 </div>
 
-
+<div class="main">
 {% leaflet_map "map" %}
-
+</div>
 </body>
 <script src="https://unpkg.com/htmx.org@1.6.1"></script>
 

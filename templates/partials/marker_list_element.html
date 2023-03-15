@@ -1,13 +1,15 @@
-<article id="marker_{{ marker.id }}">
-    <div>
-        <p>{{ marker.name }}</p>
+<li class="row-outer" id="marker_{{ marker.id }}">
+    <div class="row-inner">
+        <div class="btn marker-list-btn">{{ marker.name }}</div>
+    </div>
+    <div class="row-inner">
         <form
                 hx-confirm="Really?"
-                hx-target="closest article"
+                hx-target="closest li"
                 hx-swap="outerHTML swap"
                 hx-delete="delete/{{ marker.id }}"
         >
-            <input type="submit" value="Delete">
+            <input type="submit" value="X" class="btn marker-list-btn btn-del">
         </form>
     </div>
     <script>
@@ -15,4 +17,4 @@
             addMarkerToMap({{ marker.latitude }}, {{ marker.longitude }}, "{{ marker.name }}", {{ marker.id }});
         }
     </script>
-</article>
+</li>
