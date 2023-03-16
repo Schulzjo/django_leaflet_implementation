@@ -3,21 +3,23 @@ import json
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
-from django.template import Context, Template
+
+from markers.forms import MarkerForm
 from markers.models import Marker
 
 
 def markers_map_view(request):
     markers = Marker.objects.all()
-    return render(request, 'map.html', {'markers': markers})
+    add_marker_form = MarkerForm()
+    return render(request, 'map.html', {'markers': markers, "add_marker_form": add_marker_form})
 
 
 @require_http_methods(["POST"])
 def markers_create_view(request):
     marker = None
     name = request.POST.get('name')
-    latitude = request.POST.get('lat')
-    longitude = request.POST.get('lng')
+    latitude = request.POST.get('latitude')
+    longitude = request.POST.get('longitude')
     print(name, latitude, longitude)
     if name and latitude and longitude:
         marker = Marker.objects.create(name=name, latitude=latitude, longitude=longitude)

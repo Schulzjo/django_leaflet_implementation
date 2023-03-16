@@ -75,36 +75,25 @@
 <body class="App" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
 
 <form class="input-form"
-        id="markerForm"
+      id="markerForm"
       hx-post="create/"
       hx-target="#marker-list"
-      hx-swap="afterend"
->
-    <label for="name">
-        Name
-        <input class="input-field" type="text" value="Dummy name" name="name">
-    </label>
-    <label for="lat">
-        Latitude
-        <input class="input-field" type="text" value="10" name="lat">
-    </label>
-    <label for="lng">
-        Longitude
-        <input class="input-field" type="text" value="1" name="lng">
-    </label>
+      hx-swap="afterend">
+    {% csrf_token %}
+    {{ add_marker_form }}
     <input type="submit" class="btn" value="Add Marker">
 </form>
 
 <div class="markerList">
-<ul id="marker-list" >
-    {% for marker in markers %}
-        {% include "partials/marker_list_element.html" %}
-    {% endfor %}
-</ul>
+    <ul id="marker-list">
+        {% for marker in markers %}
+            {% include "partials/marker_list_element.html" %}
+        {% endfor %}
+    </ul>
 </div>
 
 <div class="main">
-{% leaflet_map "map" %}
+    {% leaflet_map "map" %}
 </div>
 </body>
 <script src="https://unpkg.com/htmx.org@1.6.1"></script>
