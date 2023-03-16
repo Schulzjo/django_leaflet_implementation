@@ -16,17 +16,13 @@ def markers_map_view(request):
 
 @require_http_methods(["POST"])
 def markers_create_view(request):
-    marker = None
-    name = request.POST.get('name')
-    latitude = request.POST.get('latitude')
-    longitude = request.POST.get('longitude')
-    print(name, latitude, longitude)
-    if name and latitude and longitude:
-        marker = Marker.objects.create(name=name, latitude=latitude, longitude=longitude)
 
-    return render(request, 'partials/marker_list_element.html',
-                  {'marker': marker, 'longitude': longitude, 'latitude': marker.latitude,
-                   longitude: marker.latitude})
+    form = MarkerForm(request.POST)
+
+    if form.is_valid():
+        marker = form.save()
+        return render(request, 'partials/marker_list_element.html',
+                      {'marker': marker, 'longitude': marker.longitude, 'latitude': marker.latitude})
 
 
 @require_http_methods(["DELETE"])
