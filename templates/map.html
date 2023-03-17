@@ -1,5 +1,6 @@
 {% load leaflet_tags %}
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,6 +16,23 @@
     </style>
     <script>
 
+        // function which return marker created with lat long name
+        function createMarker(lat, long, name) {
+            let marker = L.marker([lat, long]);
+            marker.bindPopup(L.popup({
+                maxWidth: 250,
+                minWidth: 100,
+                autoClose: false,
+                closeOnClick: false,
+                className: 'popup'
+            })
+                .setContent(
+                    `<div>
+                        <h3>${name}</h3>
+                     </div>`
+                ));
+            return marker;
+        }
 
         let map = undefined;
         let markers = [];
@@ -23,7 +41,7 @@
             markers.push({
                 "id": {{ marker.id }},
                 "name": "{{ marker.name }}",
-                "leaflet_marker": L.marker([{{ marker.latitude }}, {{ marker.longitude }}])
+                "leaflet_marker": createMarker({{ marker.latitude }}, {{ marker.longitude }}, "{{ marker.name }}")
             });
         {% endfor %}
 
@@ -37,7 +55,8 @@
 
         const addMarkerToMap = function (lat, lng, name, id) {
 
-            const lmarker = L.marker([lat, lng]);
+            const lmarker = createMarker(lat, lng, name);
+
             markers.push({
                 "id": id,
                 "name": name,
