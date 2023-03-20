@@ -17,7 +17,7 @@
     <script>
 
         // function which return marker created with lat long name
-        function createMarker(lat, long, name) {
+        function createMarker(lat, long, name, id) {
             let marker = L.marker([lat, long]);
             marker.bindPopup(L.popup({
                 maxWidth: 250,
@@ -27,11 +27,39 @@
                 className: 'popup'
             })
                 .setContent(
-                    `<div>
-                        <h3>${name}</h3>
-                     </div>`
+                    `<div class="row-outer">
+                        <h3 class="row-inner">${name}</h3>
+                        <button class="row-inner btn" style="background:red; marginLeft: 5px; marginTop:-5px," click="removeMarkerFromListAndMap(${id})">X
+                        </button>
+                    `
                 ));
             return marker;
+        }
+
+        // function which removes marker from marker list by id due to fact that htmx stuff in form in set Content do not work
+        function removeMarkerFromListAndMap(id) {
+            //li element from marker list ui
+            let markerli = document.getElementById("marker_" + id);
+            // csrf toke
+            let csrftoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+
+            fetch('delete/' + id, {
+                method: 'DELETE',
+                headers: {"X-CSRFToken": csrftoken},
+            })
+                .then(response => response.text())
+                .then(data => {
+                    markerli.innerHTML = data;
+                    htmx.process(markerli);
+                }).then(() => {
+                // remove marker from map
+                removeMarkerFromMap(id);
+                // remove entrie from markers array
+                markers = markers.filter(marker => marker.id !== id);
+            })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
         }
 
         let map = undefined;
@@ -41,7 +69,7 @@
             markers.push({
                 "id": {{ marker.id }},
                 "name": "{{ marker.name }}",
-                "leaflet_marker": createMarker({{ marker.latitude }}, {{ marker.longitude }}, "{{ marker.name }}")
+                "leaflet_marker": createMarker({{ marker.latitude }}, {{ marker.longitude }}, "{{ marker.name }}", {{ marker.id }})
             });
         {% endfor %}
 
@@ -55,7 +83,7 @@
 
         const addMarkerToMap = function (lat, lng, name, id) {
 
-            const lmarker = createMarker(lat, lng, name);
+            const lmarker = createMarker(lat, lng, name, id);
 
             markers.push({
                 "id": id,
